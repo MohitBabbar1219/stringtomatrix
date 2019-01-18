@@ -1,11 +1,23 @@
+const convertMatrixStringToIntegerArray = (matrixString) => {
+  const rowStringArray = matrixString.split('\n');
+  const stringElementMatrix = rowStringArray.map(row => row.split(' '));
+  return stringElementMatrix.map(rows => rows
+    .map(elements => parseInt(elements, 10)));
+};
+
+const transposeMatrix = (matrix) => {
+  const numberOfRows = matrix.length;
+  const transposedMatrix = [];
+  for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
+    transposedMatrix.push([]);
+  }
+  matrix.forEach(row => row.forEach((element, index) => transposedMatrix[index].push(element)));
+  return transposedMatrix;
+};
+
 export class Matrix {
   constructor(matrixString) {
-    const rowStrings = matrixString.split('\n');
-    this.rows = rowStrings.map(rowString => rowString.split(' ')
-      .map(arrayElementInString => parseInt(arrayElementInString, 10)));
-    this.columns = [];
-    [...Array(this.rows[0].length)].forEach(() => this.columns.push([]));
-    rowStrings.forEach(rowString => rowString.split(' ')
-      .forEach((arrayElement, index) => this.columns[index].push(parseInt(arrayElement, 10))));
+    this.rows = convertMatrixStringToIntegerArray(matrixString);
+    this.columns = transposeMatrix(this.rows);
   }
 }
